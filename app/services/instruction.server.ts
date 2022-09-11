@@ -1,22 +1,17 @@
-import type { Instruction, PrismaClient } from '@prisma/client';
-
-export type InstructionData = Pick<
-  Instruction,
-  'createdById' | 'long' | 'short'
->;
+import type { Prisma, PrismaClient } from '@prisma/client';
 
 export const createInstruction = async (
   db: PrismaClient,
-  data: InstructionData
+  args: Prisma.InstructionCreateArgs
 ) => {
-  const instruction = await db.instruction.create({ data });
+  const instruction = await db.instruction.create(args);
 
   return instruction;
 };
 
 export const createInstructions = async (
   db: PrismaClient,
-  data: InstructionData[]
+  data: Prisma.InstructionCreateInput[]
 ) => {
   try {
     const instructions = await Promise.all(
