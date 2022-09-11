@@ -1,21 +1,31 @@
-import { nanoid } from 'nanoid';
-import { db } from '~/utils/lowdb.server';
+import type { Instruction, PrismaClient } from '@prisma/client';
 
-export type Instruction = {
-  id: string;
-  long: string;
-  short: string;
-  type: 'document' | 'step';
-  parentInstruction?: { id: string; order: number };
-  version: `${number}.${number}.${number}`;
+export type InstructionData = Pick<
+  Instruction,
+  'createdById' | 'long' | 'short'
+>;
+
+export const createInstruction = async (
+  db: PrismaClient,
+  data: InstructionData
+) => {
+  const instruction = await db.instruction.create({ data });
+
+  return instruction;
 };
 
-// export const createCategory = async (data: Omit<Category, 'id'>) => {
-//   const category = { id: nanoid(), ...data };
-
-//   await db.read();
-//   db.data?.categories?.push(category);
-//   await db.write();
-
-//   return category;
-// };
+export const createInstructions = async (
+  db: PrismaClient,
+  data: InstructionData[]
+) => {
+  try {
+    const instructions = await Promise.all(
+      data.map((instruction) => {
+        return db.instruction.create({ data: instruction });
+      })
+    );
+    return instructions;
+  } catch (error) {
+    return error;
+  }
+};
