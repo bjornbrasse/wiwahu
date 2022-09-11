@@ -13,7 +13,7 @@
     "prepare": "husky install",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "start:dev": "cross-env NODE_ENV=development node server/index.js",
-    "validate": "echo Validate"
+    "validate": "echo Validate && eslint"
   },
   "dependencies": {
     "@prisma/client": "^4.3.1",
