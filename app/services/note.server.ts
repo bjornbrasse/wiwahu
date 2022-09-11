@@ -1,12 +1,7 @@
 import { nanoid } from 'nanoid';
 import { db } from '~/utils/lowdb.server';
 
-export type Note = {
-  id: string;
-  author: string;
-  instruction: string;
-  text: string;
-};
+import type { Note } from '~/models/note.server';
 
 export const createNote = async (data: Omit<Note, 'id'>) => {
   const note = { id: nanoid(), ...data };

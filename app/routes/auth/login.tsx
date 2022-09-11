@@ -5,10 +5,8 @@ import { Field } from '~/components/form-elements';
 import {
   getUser,
   getUserSecureByEmailAndPassword,
-  User,
-} from '~/models/user.server';
+} from '~/services/user.server';
 import { z } from 'zod';
-import dayjs from 'dayjs';
 import { sendEmail, loginEmail } from '~/utils/email';
 import { customRandom, urlAlphabet, random } from 'nanoid';
 
@@ -28,8 +26,6 @@ type ActionData = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  console.log('KOMT HIER????******* ');
-
   const result = schema.safeParse(Object.fromEntries(await request.formData()));
 
   if (!result.success) {

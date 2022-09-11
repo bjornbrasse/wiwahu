@@ -5,14 +5,15 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "start": "cross-env NODE_ENV=production node server/index.js",
-    "start:dev": "cross-env NODE_ENV=development node server/index.js",
-    "generate:css": "tailwindcss -i ./styles/tailwind.css tailwindcss -o ./app/tailwind.css",
     "dev": "cross-env NODE_ENV=development run-p dev:*",
     "dev:css": "cross-env NODE_ENV=development npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:server": "cross-env NODE_ENV=development node server/index.js",
-    "prepare": "husky install"
+    "generate:css": "tailwindcss -i ./styles/tailwind.css tailwindcss -o ./app/tailwind.css",
+    "prepare": "husky install",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "start:dev": "cross-env NODE_ENV=development node server/index.js",
+    "validate": "echo Validate"
   },
   "dependencies": {
     "@prisma/client": "^4.3.1",

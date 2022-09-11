@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
-import { getUser } from '~/models/user.server';
+import { getUser } from '~/services/user.server';
 
-import type { TUser } from '~/models/user.server';
+import type { User } from '~/models/user.server';
 
 // import { sendEmail } from "~/utils/email";
 // import { passwordResetEmail } from "~/utils/email/templates";

@@ -1,12 +1,13 @@
 import { useLoaderData } from '@remix-run/react';
 import { Container } from '~/components/container';
-import { getUsers } from '~/models/user.server';
+import { getUsers } from '~/services/user.server';
 import { requireSessionUser } from '~/session.server';
 
 import type { LoaderFunction } from '@remix-run/node';
 import type { RouteMatch } from '@remix-run/react';
 import type { User } from '~/models/user.server';
 import type { Handle, ThumbMenuItem } from '~/types';
+import { db } from '~/utils/db.server';
 // import { CustomError } from '~/types';
 
 export const handle: Handle = {
@@ -37,7 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   if (!user) throw new Error('Probleem');
 
-  const users = await getUsers();
+  const users = await getUsers(db);
 
   return { users };
 };

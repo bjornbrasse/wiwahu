@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 
 import type { PrismaClient } from '@prisma/client';
-import type { UserData, UserRole } from '~/models/user.server';
+import type { UserRole } from '~/models/user.server';
 
 export const createUser = async (
   db: PrismaClient,
@@ -26,39 +26,23 @@ export const createUser = async (
   });
 };
 
-// export const getUser = async (
-//   args:
-//     | { id: string; email?: never; passwordResetToken?: never }
-//     | {
-//         id?: never;
-//         email: string;
-//         passwordResetToken?: never;
-//       }
-//     | { id?: never; email?: never; passwordResetToken: string }
-//     | { id?: never; email: string; passwordResetToken?: never }
-// ) => {
-//   await db.read();
+export const getUser = async (
+  db: PrismaClient,
+  args:
+    | { id: string; email?: never }
+    | {
+        id?: never;
+        email: string;
+      }
+) => {
+  return db.user.findFirst({
+    where: { OR: [{ id: args?.id }, { email: args?.email }] },
+  });
+};
 
-//   if (args?.id) {
-//     // return await db.user.findFirst({ where: { id: args.id } });
-//     return await db.data?.users?.find((user) => user.id === args.id);
-//   }
-
-//   if (args?.email) {
-//     return await db.data?.users?.find((user) => user.email === args.email);
-//   }
-
-//   if (args?.passwordResetToken)
-//     return await db.data?.users.find(
-//       (user) => user.passwordResetToken === args.passwordResetToken
-//     );
-// };
-
-// export async function getUsers() {
-//   await db.read();
-//   const users = db.data?.users ?? [];
-//   return users;
-// }
+export async function getUsers(db: PrismaClient) {
+  return await db.user.findMany();
+}
 
 // export async function getUserSecureByEmailAndPassword({
 //   email,
@@ -135,18 +119,21 @@ export const createUser = async (
 //   return db.user.create();
 // }
 
-// export async function setPasswordResetToken({ id }: { id: string }) {
-//   const user = await getUser({ id });
-//   if (!user) throw new Error('User not found');
+export async function setPasswordResetToken(
+  db: PrismaClient,
+  { id }: { id: string }
+) {
+  const user = await getUser(db, { id });
+  if (!user) throw new Error('User not found');
 
-//   await db.read();
+  await db.read();
 
-//   if (!db.data?.users) return;
+  if (!db.data?.users) return;
 
-//   db.data.users = db.data.users.map((u) =>
-//     u.id === user.id ? { ...u, passwordResetToken: 'aaa' } : u
-//   );
-// }
+  db.data.users = db.data.users.map((u) =>
+    u.id === user.id ? { ...u, passwordResetToken: 'aaa' } : u
+  );
+}
 
 // export async function sendPasswordResetEmailToUser({
 //   email,

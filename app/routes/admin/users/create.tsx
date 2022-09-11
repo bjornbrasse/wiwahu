@@ -1,7 +1,10 @@
-import { ActionFunction, redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
-import { Field } from "~/components/form-elements";
-import { createUser } from "~/models/user.server";
+import { redirect } from '@remix-run/node';
+import { Form } from '@remix-run/react';
+import { Field } from '~/components/form-elements';
+import { createUser } from '~/services/user.server';
+
+import type { ActionFunction } from '@remix-run/node';
+import { db } from '~/utils/db.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const { firstName, lastName, email, password } = Object.fromEntries(
@@ -9,14 +12,18 @@ export const action: ActionFunction = async ({ request }) => {
   );
 
   if (
-    typeof firstName !== "string" ||
-    typeof lastName !== "string" ||
-    typeof email !== "string" ||
-    typeof password !== "string"
+    typeof firstName !== 'string' ||
+    typeof lastName !== 'string' ||
+    typeof email !== 'string' ||
+    typeof password !== 'string'
   )
-    return redirect("/admin/users");
+    return redirect('/admin/users');
 
-  const user = createUser({ firstName, lastName, email, password });
+  const user = createUser(
+    db,
+    { firstName, lastName, email, role: 'user' },
+    password
+  );
 
   return { user };
 };

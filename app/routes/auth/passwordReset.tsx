@@ -2,7 +2,7 @@ import { json, redirect } from '@remix-run/node';
 import { useActionData, useLoaderData } from '@remix-run/react';
 import { badRequest } from '~/utils/badRequest';
 import { createUserSession } from '~/session.server';
-import { getUser, setPasswordResetToken } from '~/models/user.server';
+import { getUser, setPasswordResetToken } from '~/services/user.server';
 import { Field } from '~/components/form-elements';
 import { z } from 'zod';
 
