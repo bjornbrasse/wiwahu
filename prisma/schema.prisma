@@ -20,6 +20,7 @@ model Instruction {
   updatedAt   DateTime @updatedAt
   short       String
   long        String
+  type        String
 }
 
 model Note {

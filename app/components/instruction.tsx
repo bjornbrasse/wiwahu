@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { FC } from 'react';
-import type { Instruction as TInstruction } from '~/models/instruction.server';
+import type { Instruction as TInstruction } from 'types/instruction';
 
 export const Instruction: FC<{ instruction: TInstruction }> = ({
   children,

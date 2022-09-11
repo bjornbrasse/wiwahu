@@ -1,15 +1,16 @@
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { getDocuments } from '~/models/document.server';
+import { getDocuments } from '~/services/document.server';
 
 import type { LoaderFunction } from '@remix-run/node';
+import { db } from '~/utils/db.server';
 
 type LoaderData = {
   documents: Awaited<ReturnType<typeof getDocuments>>;
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const documents = await getDocuments();
+  const documents = await getDocuments(db);
 
   return json<LoaderData>({ documents });
 };

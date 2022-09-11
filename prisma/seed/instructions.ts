@@ -1,22 +1,14 @@
+import type { PrismaClient, User } from '@prisma/client';
+import { InstructionUncheckedCreateInput } from 'types/instruction';
+import { createInstructions } from '~/services/instruction.server';
 // import { faker as F } from "@faker-js/faker";
 
-import type { PrismaClient, User } from '@prisma/client';
-import {
-  createInstructions,
-  InstructionData,
-} from '~/services/instruction.server';
-
-// type OrganisationData = Pick<Organisation, "name" | "slug" | "emailDomain"> & {
-//   departments: (Pick<Department, "name" | "slug"> & {
-//     schedules?: Pick<Schedule, "name" | "slug">[];
-//   })[];
-// } & Partial<Organisation>;
-
 const genInstructionData = async () => {
-  const arr: Omit<InstructionData, 'createdById'>[] = [
+  const arr: Omit<InstructionUncheckedCreateInput, 'createdById'>[] = [
     {
       long: 'Pannekoeken bakken',
       short: 'PB',
+      type: 'document',
     },
   ];
 

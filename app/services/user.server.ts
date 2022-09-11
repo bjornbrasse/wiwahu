@@ -119,21 +119,21 @@ export async function getUsers(db: PrismaClient) {
 //   return db.user.create();
 // }
 
-export async function setPasswordResetToken(
-  db: PrismaClient,
-  { id }: { id: string }
-) {
-  const user = await getUser(db, { id });
-  if (!user) throw new Error('User not found');
+// export async function setPasswordResetToken(
+//   db: PrismaClient,
+//   { id }: { id: string }
+// ) {
+//   const user = await getUser(db, { id });
+//   if (!user) throw new Error('User not found');
 
-  await db.read();
+//   await db.read();
 
-  if (!db.data?.users) return;
+//   if (!db.data?.users) return;
 
-  db.data.users = db.data.users.map((u) =>
-    u.id === user.id ? { ...u, passwordResetToken: 'aaa' } : u
-  );
-}
+//   db.data.users = db.data.users.map((u) =>
+//     u.id === user.id ? { ...u, passwordResetToken: 'aaa' } : u
+//   );
+// }
 
 // export async function sendPasswordResetEmailToUser({
 //   email,

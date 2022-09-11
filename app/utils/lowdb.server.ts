@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 // import { fileURLToPath } from "url";
 
 import type { Category } from '~/models/category.server';
-import type { Instruction } from '~/models/instruction.server';
+import type { Instruction } from 'types/instruction';
 import type { Note } from '~/models/note.server';
 import type { Organisation } from '~/models/organisation.server';
 import type { TUser } from '~/models/user.server';

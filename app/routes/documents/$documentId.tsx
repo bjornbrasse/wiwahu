@@ -1,8 +1,7 @@
 import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import { Instruction } from '~/components/instruction';
-import { getDocument } from '~/models/document.server';
-
+import { getDocument } from '~/services/document.server';
 import { useState } from 'react';
 import { upsertNote, getNotes } from '~/models/note.server';
 import * as Z from 'zod';
@@ -12,22 +11,24 @@ import { badRequest } from '~/utils/badRequest';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import type { inferSafeParseErrors } from 'types';
 import { requireSessionUser } from '~/session.server';
+import { db } from '~/utils/db.server';
 
 type LoaderData = {
   document: Exclude<Awaited<ReturnType<typeof getDocument>>, null>;
-  notes: Awaited<ReturnType<typeof getNotes>>;
+  // notes: Awaited<ReturnType<typeof getNotes>>;
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const document = await getDocument({ id: params.documentId ?? '' });
+  const document = await getDocument(db, { id: params.documentId ?? '' });
 
   if (!document) return redirect('/documents');
 
-  const notes = await getNotes({
-    instructions: document.steps.map((s) => s.id),
-  });
+  // const notes = await getNotes({
+  //   instructions: document.steps.map((s) => s.id),
+  // });
 
-  return json<LoaderData>({ document, notes });
+  // return json<LoaderData>({ document, notes });
+  return json<LoaderData>({ document });
 };
 
 const schema = Z.object({

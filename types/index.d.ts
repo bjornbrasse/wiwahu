@@ -1,10 +1,14 @@
 /// <reference types="@remix-run/dev" />
 /// <reference types="@remix-run/node/globals" />
 
-import type { ActionFunction } from '@remix-run/node';
 import { RouteMatch } from '@remix-run/react';
+import * as Z from 'zod';
+
+import type { ActionFunction } from '@remix-run/node';
 // import type { User, Role } from "@prisma/client";
-// import type { z } from "zod";
+
+export * from './document';
+export * from './instruction';
 
 type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>;
@@ -261,13 +265,15 @@ export {
 // export * from './simplecast';
 // export * from './transistor';
 
-// This type infer errors from a ZodType, as produced by `flatten()` of a parsed schema.
+/**
+ * This type infers errors from a ZodType, as produced by `flatten()` of a parsed schema.
+ */
 export type inferSafeParseErrors<
-  T extends z.ZodType<any, any, any>,
+  T extends Z.ZodType<any, any, any>,
   U = string
 > = {
   formErrors?: U[];
   fieldErrors?: {
-    [P in keyof z.infer<T>]?: U[];
+    [P in keyof Z.infer<T>]?: U[];
   };
 };

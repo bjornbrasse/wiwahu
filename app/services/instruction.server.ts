@@ -1,4 +1,5 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
+import { InstructionUncheckedCreateInput } from 'types/instruction';
 
 export const createInstruction = async (
   db: PrismaClient,
@@ -11,12 +12,12 @@ export const createInstruction = async (
 
 export const createInstructions = async (
   db: PrismaClient,
-  data: Prisma.InstructionCreateInput[]
+  input: InstructionUncheckedCreateInput[]
 ) => {
   try {
     const instructions = await Promise.all(
-      data.map((instruction) => {
-        return db.instruction.create({ data: instruction });
+      input.map((data) => {
+        return db.instruction.create({ data });
       })
     );
     return instructions;
