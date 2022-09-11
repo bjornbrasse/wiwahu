@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  h1 {
+    @apply text-xl font-bold;
+  }
+  h2 {
+    @apply text-lg;
+  }
+
+  .container {
+    @apply flex h-full w-full max-w-none items-center justify-center overflow-hidden;
+  }
+
+  .card {
+    @apply inline-block rounded-lg border border-gray-200 p-2;
+  }
+
+  .btn {
+    @apply rounded-lg px-2 py-1;
+  }
+  .btn-delete {
+    @apply bg-red-500 text-white;
+  }
+  .btn-save {
+    @apply bg-blue-700 text-white;
+  }
+  .btn-success {
+    @apply bg-emerald-500 text-white;
+  }
+
+  .arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+
+    border-left: 12px solid red;
+  }
+
+  .fc {
+    @apply items-center p-4;
+  }
+
+  .fc-line {
+    @apply h-2 w-max shrink place-self-auto border-4 border-red-500;
+  }
+
+  .fc-start,
+  .fc-end {
+    @apply rounded-full bg-gray-300 px-8;
+  }
+
+  .fc-step {
+    @apply mx-4 rounded-xl bg-blue-200/30 drop-shadow-lg;
+  }
+
+  .fc-action {
+    @apply border-2 border-purple-700;
+  }
+
+  .fc-empty {
+    @apply place-self-stretch hover:bg-purple-600;
+  }
+}
+
+@layer utilities {
+  .square {
+    aspect-ratio: 1 / 1;
+  }
+}
