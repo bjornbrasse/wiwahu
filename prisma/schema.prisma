@@ -21,6 +21,7 @@ model Instruction {
   short       String
   long        String
   type        String
+  version     String
 }
 
 model Note {

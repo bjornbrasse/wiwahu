@@ -277,3 +277,11 @@ export type inferSafeParseErrors<
     [P in keyof Z.infer<T>]?: U[];
   };
 };
+
+/**
+ * Verwijdert alle optionele properties van object
+ * Bron: https://github.com/type-challenges/type-challenges/issues/15536
+ */
+export type RemoveOptionalProperties<T> = {
+  [P in keyof T as Omit<T, P> extends T ? never : P]: T[P];
+};

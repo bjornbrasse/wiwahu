@@ -25,3 +25,19 @@ export const getDocument = async (db: PrismaClient, { id }: { id: string }) => {
 export const getDocuments = async (db: PrismaClient) => {
   return db.instruction.findMany({ where: {} });
 };
+
+export const searchDocuments = async (
+  db: PrismaClient,
+  { term }: { term: string }
+) => {
+  return db.instruction.findMany({
+    where: {
+      AND: [
+        // TODO: make postgresql database for case-insensitive search
+        // { short: { contains: term, mode: 'insensitive' } }
+        { long: { contains: term } },
+        { type: 'document' },
+      ],
+    },
+  });
+};

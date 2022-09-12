@@ -9,6 +9,19 @@ const genInstructionData = async () => {
       long: 'Pannekoeken bakken',
       short: 'PB',
       type: 'document',
+      version: '0.0.1',
+    },
+    {
+      long: 'Auto wassen',
+      short: 'Geen een omschrijving van hoe een auto moet worden gewassen!!!',
+      type: 'document',
+      version: '0.0.1',
+    },
+    {
+      long: 'Astma medicatie pakken',
+      short: '',
+      type: 'document',
+      version: '0.0.1',
     },
   ];
 
