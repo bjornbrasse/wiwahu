@@ -9,6 +9,7 @@ import type { ActionFunction } from '@remix-run/node';
 
 export * from './document';
 export * from './instruction';
+export * from './organisation';
 
 type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>;

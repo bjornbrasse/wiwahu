@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import { Disclosure } from '@headlessui/react';
 import { DocumentProcedure } from '~/components/document-procedure';
 import DocumentStart from '~/components/document-start';
+import { generateDocumentID } from '~/utils/helpers';
 
 type LoaderData = {
   document: Exclude<Awaited<ReturnType<typeof getDocument>>, null>;
@@ -27,6 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   if (!document) return redirect('/documents');
 
+  console.log('ID', generateDocumentID());
   // const notes = await getNotes({
   //   instructions: document.steps.map((s) => s.id),
   // });
@@ -137,7 +139,11 @@ export default function Document() {
         </Step>
       </div>
       <div className="relative flex-1 border border-red-800">
-        <div className={activeStep === 0 ? 'visible' : 'invisible'}>
+        <div
+          className={`absolute inset-0 ${
+            activeStep === 0 ? 'visible' : 'invisible'
+          }`}
+        >
           <DocumentStart />
         </div>
         <div

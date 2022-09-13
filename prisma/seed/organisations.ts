@@ -1,12 +1,7 @@
 // import { faker as F } from "@faker-js/faker";
 
-// import type {
-//   Department,
-//   Organisation,
-//   PrismaClient,
-//   Schedule,
-//   User,
-// } from "@prisma/client";
+import type { PrismaClient, User } from '@prisma/client';
+import { createOrganisations } from '~/services/organisation.server';
 
 // type OrganisationData = Pick<Organisation, "name" | "slug" | "emailDomain"> & {
 //   departments: (Pick<Department, "name" | "slug"> & {
@@ -101,3 +96,40 @@
 //     })
 //   );
 // }
+
+export async function seedOrganisations({
+  db,
+  adminUser,
+}: {
+  db: PrismaClient;
+  adminUser: User;
+}) {
+  await createOrganisations(db, [
+    {
+      name: 'Elisabeth-TweeSteden Ziekenhuis',
+      nameShort: 'ETZ',
+      slug: 'etz',
+      departments: {
+        create: [
+          {
+            name: 'Ziekenhuisapotheek',
+            departmentEmployees: {
+              create: [
+                {
+                  user: {
+                    create: {
+                      email: 'bjorn@etz.nl',
+                      firstName: 'Bjorn',
+                      lastName: 'Brassé',
+                      role: 'admin',
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ]);
+}
