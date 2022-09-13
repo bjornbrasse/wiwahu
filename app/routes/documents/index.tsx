@@ -17,10 +17,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const searchParams = url.searchParams;
 
   const searchedDocuments = await searchDocuments(db, {
-    term: searchParams.get('search') ?? '',
+    terms: String(searchParams.get('search')).split(' '),
   });
-
-  console.log('GEVONDEN ****', searchedDocuments);
 
   return json<LoaderData>({ documents, searchedDocuments });
 };
@@ -39,7 +37,7 @@ export default function Documents() {
             Documenten
             {documents.map((document) => (
               <Link key={document.id} to={document.id}>
-                <li>{document.long}</li>
+                <li>{document.instruction}</li>
               </Link>
             ))}
           </div>
@@ -67,7 +65,7 @@ export default function Documents() {
           <div className="rounded-lg bg-gray-300">
             Zoekresultaten:
             {searchedDocuments.map((doc) => (
-              <h1>{doc.long}</h1>
+              <h1>{doc.instruction}</h1>
             ))}
           </div>
         </div>

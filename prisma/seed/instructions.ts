@@ -3,25 +3,98 @@ import { InstructionUncheckedCreateInput } from 'types/instruction';
 import { createInstructions } from '~/services/instruction.server';
 // import { faker as F } from "@faker-js/faker";
 
-const genInstructionData = async () => {
+const genInstructionData = async (adminUser: User) => {
   const arr: Omit<InstructionUncheckedCreateInput, 'createdById'>[] = [
     {
-      long: 'Pannekoeken bakken',
-      short: 'PB',
+      instruction: 'Pannekoeken bakken',
+      explanation:
+        'We gaan echt heerlijke pannenkoeken maken, volgens grootmoeders recept!',
+      type: 'document',
+      version: '0.0.1',
+      childInstructions: {
+        create: [
+          {
+            childInstruction: {
+              create: {
+                instruction: 'Mail zeven',
+                explanation:
+                  'Heel belangrijk dat er geen klontjes in zitten, dat is niet lekker!',
+                type: 'step',
+                version: '0.0.1',
+                createdById: adminUser.id,
+              },
+            },
+          },
+          {
+            childInstruction: {
+              create: {
+                instruction: 'Eieren toevoegen',
+                type: 'step',
+                version: '0.0.1',
+                createdById: adminUser.id,
+              },
+            },
+          },
+          {
+            childInstruction: {
+              create: {
+                instruction: 'Melk erbij',
+                explanation:
+                  'Meng lege artis, dwz. in kleine beetjes toevoegen!!!',
+                type: 'step',
+                version: '0.0.1',
+                createdById: adminUser.id,
+              },
+            },
+          },
+          {
+            childInstruction: {
+              create: {
+                instruction: 'Mixen',
+                explanation:
+                  'Mix gedurende minimaal 30 minuten om de Pannekoeken lekker luchtig te krijgen!!',
+                type: 'step',
+                version: '0.0.1',
+                createdById: adminUser.id,
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      instruction: 'Auto wassen',
+      explanation:
+        'Geen een omschrijving van hoe een auto moet worden gewassen!!!',
       type: 'document',
       version: '0.0.1',
     },
     {
-      long: 'Auto wassen',
-      short: 'Geen een omschrijving van hoe een auto moet worden gewassen!!!',
+      instruction: 'Astma medicatie pakken',
+      explanation: '',
       type: 'document',
       version: '0.0.1',
     },
     {
-      long: 'Astma medicatie pakken',
-      short: '',
+      instruction: 'Cytostaticum infuus toedienen',
+      explanation: '',
       type: 'document',
       version: '0.0.1',
+      warnings: 'Zorg ervoor niet te spillen!',
+      childInstructions: {
+        create: [
+          {
+            childInstruction: {
+              create: {
+                instruction: 'Prik infuus',
+                type: 'document',
+                version: '0.01',
+                createdById: adminUser.id,
+              },
+            },
+          },
+        ],
+      },
     },
   ];
 
@@ -53,7 +126,7 @@ export async function seedInstructions({
   db: PrismaClient;
   adminUser: User;
 }) {
-  const instructionData = await genInstructionData();
+  const instructionData = await genInstructionData(adminUser);
 
   await createInstructions(
     db,

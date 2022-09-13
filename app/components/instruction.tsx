@@ -11,11 +11,11 @@ export const Instruction: FC<{ instruction: TInstruction }> = ({
 
   return (
     <div
-      className="col-span-8 flex-none rounded-lg border border-gray-400 bg-blue-50 p-2"
+      className="flex-none rounded-lg border border-gray-400 bg-blue-50 p-2"
       key={instruction.id}
     >
       <div className="flex justify-between">
-        <p>{instruction.short}</p>
+        <p>{instruction.instruction}</p>
         <button onClick={() => setShowDetails((val) => !val)}>
           {children}
           <i className="fas fa-chevron-down"></i>
@@ -24,7 +24,7 @@ export const Instruction: FC<{ instruction: TInstruction }> = ({
       {/* {showDetails.includes(instruction.id) && ( */}
       {showDetails && (
         <div className="bg-gray-200 p-1">
-          <p>{instruction.long}</p>
+          <p>{instruction.explanation}</p>
         </div>
       )}
     </div>

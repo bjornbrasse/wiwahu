@@ -13,15 +13,26 @@ datasource db {
 }
 
 model Instruction {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  createdBy   User     @relation(name: "InstructionCreatedBy", fields: [createdById], references: [id])
-  createdById String
-  updatedAt   DateTime @updatedAt
-  short       String
-  long        String
-  type        String
-  version     String
+  id                 String              @id @default(cuid())
+  createdAt          DateTime            @default(now())
+  createdBy          User                @relation(name: "InstructionCreatedBy", fields: [createdById], references: [id])
+  createdById        String
+  updatedAt          DateTime            @updatedAt
+  instruction        String
+  explanation        String?
+  type               String
+  version            String
+  warnings           String?
+  parentInstructions ParentInstruction[] @relation("childInstruction")
+  childInstructions  ParentInstruction[] @relation("parentInstruction")
+}
+
+model ParentInstruction {
+  id                  String      @id @default(cuid())
+  parentInstruction   Instruction @relation(name: "parentInstruction", fields: [parentInstructionId], references: [id])
+  parentInstructionId String
+  childInstruction    Instruction @relation(name: "childInstruction", fields: [childInstructionId], references: [id])
+  childInstructionId  String
 }
 
 model Note {

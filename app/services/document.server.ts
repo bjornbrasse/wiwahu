@@ -1,43 +1,65 @@
 import { redirect } from '@remix-run/node';
 
 import type { Prisma, PrismaClient } from '@prisma/client';
-import type { Document } from '~/types';
+import type { Document, Instruction } from '~/types';
+import { db } from '~/utils/db.server';
 
-// function getChildSteps(parentInstructionId: string) {
-//   db.read();
-//   const instructions = db.data?.instructions
-//     .filter((i) => i.parentInstruction?.id === parentInstructionId)
-//     .map((i) => ({ ...i, steps: getChildSteps(i.id) })) as (Instruction & {
-//     steps: Awaited<ReturnType<typeof getChildSteps>>;
-//   })[];
+async function getInstructions(documentId: string) {
+  // const instructions = db.data?.instructions
+  //   .filter((i) => i.parentInstruction?.id === parentInstructionId)
+  //   .map((i) => ({ ...i, steps: getChildSteps(i.id) })) as (Instruction & {
+  //   steps: Awaited<ReturnType<typeof getChildSteps>>;
+  // })[];
 
-//   return instructions;
-// }
+  // return instructions;
+
+  // TODO: Recursief maken
+  const instructions = await db.instruction.findMany({
+    where: {
+      parentInstructions: { some: { parentInstructionId: documentId } },
+    },
+  });
+
+  return instructions as Instruction[];
+}
 
 export const getDocument = async (db: PrismaClient, { id }: { id: string }) => {
-  return (await db.instruction.findFirst({
+  const document = await db.instruction.findFirst({
     where: { AND: [{ id }, { type: 'document' }] },
-  })) as Document | null;
+    // include: { childInstructions: { include: { childInstruction: true } } },
+  });
 
-  // return { ...instruction, steps: getChildSteps(instruction?.id) };
+  if (!document) return null;
+
+  return {
+    ...document,
+    instructions: await getInstructions(document.id),
+  };
 };
 
 export const getDocuments = async (db: PrismaClient) => {
-  return db.instruction.findMany({ where: {} });
+  return db.instruction.findMany({ where: { type: 'document' } });
 };
 
 export const searchDocuments = async (
   db: PrismaClient,
-  { term }: { term: string }
+  { terms }: { terms: string[] }
 ) => {
-  return db.instruction.findMany({
+  const s = terms.map((term) => ({ instruction: { contains: term } }));
+  console.log('dit is de string', s);
+
+  const foundInstructions = await db.instruction.findMany({
     where: {
       AND: [
         // TODO: make postgresql database for case-insensitive search
-        // { short: { contains: term, mode: 'insensitive' } }
-        { long: { contains: term } },
+        {
+          // OR: terms.map((term) => ({ instruction: { contains: term } })),
+          AND: terms.map((term) => ({ instruction: { contains: term } })),
+        },
         { type: 'document' },
       ],
     },
   });
+
+  return foundInstructions;
 };
